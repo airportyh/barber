@@ -1,0 +1,8 @@
+TODO
+====
+
+* auto vendor prefixing
+* older browsers
+* multiple stylesheets to act as namespaces
+* allow installing all defined stylesheets
+* <https://github.com/yui/yui3/blob/master/src/stylesheet/js/stylesheet.js>

@@ -1,0 +1,19 @@
+{
+  "name": "barber",
+  "version": "0.0.0",
+  "description": "Style aggregator for single-page JS apps.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "css",
+    "style"
+  ],
+  "author": "Toby Ho",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "~1.1.1",
+    "ispy": "~0.1.2"
+  }
+}

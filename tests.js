@@ -54,9 +54,11 @@ if (typeof window !== 'undefined'){
     var div = document.createElement('div')
     div.className = 'view'
     document.body.appendChild(div)
-    t.assert(getStyleProp(div, 'border').match(/1px solid (?:black|rgb\(0, 0, 0\))/))
+    t.equal(getStyleProp(div, 'border-top-width'), '1px')
+    t.equal(getStyleProp(div, 'border-top-style'), 'solid')
+    t.assert(getStyleProp(div, 'border-top-color').match(/black|rgb\(0, 0, 0\)/))
     b.uninstall()
-    t.assert(!getStyleProp(div, 'border').match(/1px solid (?:black|rgb\(0, 0, 0\))/))
+    t.assert(getStyleProp(div, 'border-top-width').match(/0px|medium/))
     t.end()
   })
 
@@ -67,7 +69,7 @@ if (typeof window !== 'undefined'){
     var div = document.createElement('div')
     div.className = 'view'
     document.body.appendChild(div)
-    t.assert(getStyleProp(div, 'border').match(/1px solid (?:black|rgb\(0, 0, 0\))/))
+    t.equal(getStyleProp(div, 'border-top-width'), '1px')
     b.uninstall()
     t.end()
   })
@@ -79,13 +81,19 @@ if (typeof window !== 'undefined'){
     div.className = 'view'
     document.body.appendChild(div)
     b.add('.view { border: 1px solid black; }')
-    t.assert(getStyleProp(div, 'border').match(/1px solid (?:black|rgb\(0, 0, 0\))/))
+    t.equal(getStyleProp(div, 'border-top-width'), '1px')
+    b.uninstall()
     t.end()
   })
 
 }
 
 function getStyleProp(elm, prop){
-  var style = getComputedStyle(elm)
-  return style.getPropertyValue(prop)
+  if (navigator.userAgent.match(/MSIE/) && elm.currentStyle){
+    return elm.currentStyle[prop]
+  }
+  if (window.getComputedStyle){
+    var style = getComputedStyle(elm)
+    return style.getPropertyValue(prop)
+  }
 }

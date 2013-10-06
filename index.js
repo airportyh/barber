@@ -21,7 +21,7 @@ Barber.prototype = {
     if (this.styleElm){
       // already installed
       // want to update the live sheet
-      this._addRule(this.styles[key])
+      this._addRule(key, this.styles[key])
     }
   },
   styleSheet: function(){
@@ -32,16 +32,21 @@ Barber.prototype = {
     var head = parentElm || document.getElementsByTagName('head')[0]
     head.appendChild(style)
     for (var prop in this.styles){
-      this._addRule(this.styles[prop])
+      this._addRule(prop, this.styles[prop])
     }
   },
-  _addRule: function(rule){
+  _addRule: function(ruleText, rule){
     var props = ''
-    var sheet = this.styleElm.sheet
+    var sheet = this.styleElm.sheet || this.styleElm.styleSheet
+    var rules = sheet.cssRules || sheet.rules
     for (var key in rule.properties){
       props += key + ': ' + rule.properties[key] + '; '
     }
-    sheet.addRule(rule.selector, props, sheet.cssRules.length)
+    if (sheet.addRule){
+      sheet.addRule(rule.selector, props, rules.length)
+    }else{
+      sheet.insertRule(ruleText, rules.length)
+    }
   },
   uninstall: function(){
     this.styleElm.parentNode.removeChild(this.styleElm)
@@ -57,7 +62,7 @@ function parseStyle(rule){
   for (var i = 0; i < propStrings.length; i++){
     if (propStrings[i].length === 0) continue
     var parts = propStrings[i].split(':')
-    properties[parts[0].trim()] = parts[1].trim()
+    properties[trim(parts[0])] = trim(parts[1])
   }
   return {
     selector: m[1],
@@ -79,5 +84,9 @@ function keys(obj){
   return ret
 }
 
+function trim(str){
+  if (str.trim) return str.trim()
+  return str.replace(/^\s+|\s+$/g, '');
+}
 
 module.exports = Barber

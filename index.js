@@ -146,6 +146,7 @@ function Registry(){
 
 Registry.prototype = {
   get: function(name){
+    name = name || ''
     var sheet = this.sheets[name] = this.sheets[name] || new StyleSheet
     return sheet
   },
@@ -167,7 +168,7 @@ var registry = new Registry
 
 module.exports = {
   StyleSheet: StyleSheet,
-  stylesheet: function(name){
+  styleSheet: function(name){
     return registry.get(name)
   },
   install: function(){

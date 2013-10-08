@@ -115,14 +115,19 @@ test('will auto-prefix 2', function(t){
 })
 
 test('stylesheet registry', function(t){
-  t.equal(barber.stylesheet('mynamespace'), barber.stylesheet('mynamespace'))
-  t.notEqual(barber.stylesheet('mynamespace'), barber.stylesheet('another_namespace'))
+  t.equal(barber.styleSheet('mynamespace'), barber.styleSheet('mynamespace'))
+  t.notEqual(barber.styleSheet('mynamespace'), barber.styleSheet('another_namespace'))
+  t.end()
+})
+
+test('no arg returns default stylesheet', function(t){
+  t.equal(barber.styleSheet(), barber.styleSheet(''))
   t.end()
 })
 
 test('install all style sheets', function(t){
-  barber.stylesheet('sheet1').add('.view { border: 1px solid blue; }')
-  barber.stylesheet('sheet2').add('.view { background-color: red; }')
+  barber.styleSheet().add('.view { border: 1px solid blue; }')
+  barber.styleSheet('sheet').add('.view { background-color: red; }')
   var div = document.createElement('div')
   div.className = 'view'
   document.body.appendChild(div)

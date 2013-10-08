@@ -3,9 +3,9 @@ Barber - Write CSS in JS
 
 Barber lets you write CSS in Javasript. Now you might ask: *why would you want to do that?*
 
-1. You love Javascript
-2. Javacript is more programmatic/dynamic
-3. Barber automatically handles vendor prefixing of CSS properties for you
+1. You swim in Javascript anyway, why not?
+2. Javacript is more programmatic/dynamic. Variables, for example.
+3. Barber automatically handles vendor prefixing of CSS properties for you.
 4. Harness the power of Javascript modules! You can now package up CSS as part of your module to be shared between projects and with the rest of the world.
 
 ## Install
@@ -57,15 +57,15 @@ Barber was design with authoring modules in mind. How that would work is, in you
 
 *Note that no stylesheet has been installed within the module code*.
 
-Next, someone else installs your awesome module, and includes in their app somewhere
+Next, someone else installs your awesome module, and includes it in their app somewhere
 
     var awesome = require('awesome_module')
 
-Then, in a separate part of their code - the place where they bootstrap the application - they would install the stylesheets.
+Then, in a separate part of their code - where they bootstrap the application - they would install the stylesheets.
 
     Barber.install()
 
-They can also choose to skip the stylesheet from your module by explicitly installing each individual stylesheet they want included.
+They can also choose to skip the stylesheet from your module by explicitly installing each stylesheet they want included.
 
     Barber.styleSheet().install()
     Barber.styleSheet('some_other_module').install()

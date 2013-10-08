@@ -3,12 +3,12 @@ var PrefixTable = buildPrefixTable()
 
 //console.error(PrefixTable)
 
-function Barber(){
+function StyleSheet(){
   this.styles = {}
   this.styleElm = null
 }
 
-Barber.prototype = {
+StyleSheet.prototype = {
   add: function($1, $2){
     var key
     if (arguments.length === 2){
@@ -140,4 +140,40 @@ function trim(str){
   return str.replace(/^\s+|\s+$/g, '');
 }
 
-module.exports = Barber
+function Registry(){
+  this.sheets = {}
+}
+
+Registry.prototype = {
+  get: function(name){
+    var sheet = this.sheets[name] = this.sheets[name] || new StyleSheet
+    return sheet
+  },
+  installAll: function(){
+    for (var name in this.sheets){
+      var sheet = this.sheets[name]
+      sheet.install()
+    }
+  },
+  uninstallAll: function(){
+    for (var name in this.sheets){
+      var sheet = this.sheets[name]
+      sheet.uninstall()
+    }
+  }
+}
+
+var registry = new Registry
+
+module.exports = {
+  StyleSheet: StyleSheet,
+  stylesheet: function(name){
+    return registry.get(name)
+  },
+  install: function(){
+    registry.installAll()
+  },
+  uninstall: function(){
+    registry.uninstallAll()
+  }
+}

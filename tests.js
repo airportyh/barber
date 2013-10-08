@@ -1,9 +1,10 @@
-var Barber = require('./index')
+var barber = require('./index')
+var StyleSheet = barber.StyleSheet
 var test = require('tape')
 
 
 test('adds style as string', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   b.add('.view { border: 1px solid black; }')
   t.equal(b.styleSheet(), '.view { border: 1px solid black; }')
   b.add('.item { background-color: yellow; }')
@@ -15,7 +16,7 @@ test('adds style as string', function(t){
 })
 
 test('dedups exact matches', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   b.add('.view { border: 1px solid black; }')
   b.add('.view { border: 1px solid black; }')
   t.equal(b.styleSheet(), '.view { border: 1px solid black; }')
@@ -23,7 +24,7 @@ test('dedups exact matches', function(t){
 })
 
 test('adds style as object', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   b.add('.view', {
     border: '1px solid black'
   })
@@ -32,7 +33,7 @@ test('adds style as object', function(t){
 })
 
 test('parseStyle', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   t.deepEqual(b.parseStyle('.view { border: 1px solid black; }'),
     {selector: '.view', properties: {border: '1px solid black'}})
   t.deepEqual(b.parseStyle('.view { border: 1px solid black; width: 10px; }'),
@@ -44,7 +45,7 @@ test('parseStyle', function(t){
 })
 
 test('install', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   b.add('.view', {
     border: '1px solid black'
   })
@@ -61,7 +62,7 @@ test('install', function(t){
 })
 
 test('string install', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   b.add('.view { border: 1px solid black; }')
   b.install()
   var div = document.createElement('div')
@@ -73,7 +74,7 @@ test('string install', function(t){
 })
 
 test('still updates after install', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   b.install()
   var div = document.createElement('div')
   div.className = 'view'
@@ -86,7 +87,7 @@ test('still updates after install', function(t){
 
 if (!navigator.userAgent.match(/MSIE/))
 test('will auto-prefix', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   b.install()
   b.add('.view', {
     'transition-duration': '4s'
@@ -100,7 +101,7 @@ test('will auto-prefix', function(t){
 })
 
 test('will auto-prefix 2', function(t){
-  var b = new Barber
+  var b = new StyleSheet
   b.install()
   b.add('.view', {
     'text-overflow': 'ellipsis'
@@ -110,6 +111,27 @@ test('will auto-prefix 2', function(t){
   document.body.appendChild(div)
   t.equal(getStyleProp(div, 'text-overflow'), 'ellipsis')
   b.uninstall()
+  t.end()
+})
+
+test('stylesheet registry', function(t){
+  t.equal(barber.stylesheet('mynamespace'), barber.stylesheet('mynamespace'))
+  t.notEqual(barber.stylesheet('mynamespace'), barber.stylesheet('another_namespace'))
+  t.end()
+})
+
+test('install all style sheets', function(t){
+  barber.stylesheet('sheet1').add('.view { border: 1px solid blue; }')
+  barber.stylesheet('sheet2').add('.view { background-color: red; }')
+  var div = document.createElement('div')
+  div.className = 'view'
+  document.body.appendChild(div)
+  barber.install()
+  t.equal(getStyleProp(div, 'border-top-width'), '1px')
+  t.assert(getStyleProp(div, 'background-color').match(/red|rgb\(255, 0, 0\)/))
+  barber.uninstall()
+  t.notEqual(getStyleProp(div, 'border-top-width'), '1px')
+  t.assert(!getStyleProp(div, 'background-color').match(/red|rgb\(255, 0, 0\)/))
   t.end()
 })
 

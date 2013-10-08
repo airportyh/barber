@@ -1,7 +1,7 @@
 {
   "name": "barber",
   "version": "0.0.5",
-  "description": "Style aggregator for single-page JS apps.",
+  "description": "Write CSS in Javascript",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

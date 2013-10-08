@@ -1,4 +1,7 @@
 
+var PrefixTable = buildPrefixTable()
+
+//console.error(PrefixTable)
 
 function Barber(){
   this.styles = {}
@@ -40,8 +43,13 @@ Barber.prototype = {
     var sheet = this.styleElm.sheet || this.styleElm.styleSheet
     var rules = sheet.cssRules || sheet.rules
     for (var key in rule.properties){
-      props += key + ': ' + rule.properties[key] + '; '
+      var value = rule.properties[key]
+      if (key in PrefixTable){
+        key = '-' + PrefixTable[key] + '-' + key
+      }
+      props += key + ': ' + value + '; '
     }
+
     if (sheet.addRule){
       sheet.addRule(rule.selector, props, rules.length)
     }else{
@@ -70,12 +78,55 @@ function parseStyle(rule){
   }
 }
 
+function buildPrefixTable(){
+  var prefixedProperties = {}
+  var docElm = document.documentElement
+  var styles
+  if (window.getComputedStyle){
+    styles = window.getComputedStyle(docElm)
+  }else{
+    styles = docElm.currentStyle
+  }
+  
+  if (styles.length){
+    for (var i = 0; i < styles.length; i++){
+      var prop = styles[i]
+      checkProp(prop)
+    }
+  }else{
+    for (var key in styles){
+      var prop = deCamelCase(key)
+      checkProp(prop)
+    }
+  }
+  function checkProp(prop){
+    if (prop.charAt(0) === '-'){
+      // is prefix
+      var m = prop.match(/^\-([^-]+)\-(.+)$/)
+      if (!m) return null
+      var prefix = m[1]
+      var unPrefixedProp = m[2]
+      prefixedProperties[unPrefixedProp] = prefix
+    } 
+  }
+  return prefixedProperties
+}
+
 function renderStyle(selector, props){
   var styles = []
   for (var prop in props){
-    styles.push(prop + ': ' + props[prop] + '; ')
+    var value = props[prop]
+    if (prop in PrefixTable){
+      prop = '-' + PrefixTable[prop] + '-' + prop
+    }
+    styles.push(prop + ': ' + value + '; ')
   }
   return selector + ' { ' + styles.join('') + '}'
+}
+
+function deCamelCase(str) {
+  // stolen from <https://github.com/LeaVerou/prefixfree/blob/gh-pages/prefixfree.js#L151>
+  return str.replace(/[A-Z]/g, function($0) { return '-' + $0.toLowerCase() });
 }
 
 function keys(obj){

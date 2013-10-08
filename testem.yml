@@ -12,4 +12,3 @@ launchers:
     protocol: tap
 launch_in_dev:
 - chrome
-- node

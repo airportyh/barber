@@ -1,6 +1,6 @@
 {
   "name": "barber",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Style aggregator for single-page JS apps.",
   "main": "index.js",
   "scripts": {

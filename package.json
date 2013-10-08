@@ -10,6 +10,10 @@
     "css",
     "style"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:airportyh/barber.git"
+  },
   "author": "Toby Ho",
   "license": "MIT",
   "devDependencies": {

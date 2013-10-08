@@ -2,36 +2,6 @@ var barber = require('./index')
 var StyleSheet = barber.StyleSheet
 var test = require('tape')
 
-
-test('adds style as string', function(t){
-  var b = new StyleSheet
-  b.add('.view { border: 1px solid black; }')
-  t.equal(b.styleSheet(), '.view { border: 1px solid black; }')
-  b.add('.item { background-color: yellow; }')
-  t.equal(b.styleSheet(), [
-    '.view { border: 1px solid black; }',
-    '.item { background-color: yellow; }'
-  ].join('\n'))
-  t.end()
-})
-
-test('dedups exact matches', function(t){
-  var b = new StyleSheet
-  b.add('.view { border: 1px solid black; }')
-  b.add('.view { border: 1px solid black; }')
-  t.equal(b.styleSheet(), '.view { border: 1px solid black; }')
-  t.end()
-})
-
-test('adds style as object', function(t){
-  var b = new StyleSheet
-  b.add('.view', {
-    border: '1px solid black'
-  })
-  t.equal(b.styleSheet(), '.view { border: 1px solid black; }')
-  t.end()
-})
-
 test('parseStyle', function(t){
   var b = new StyleSheet
   t.deepEqual(b.parseStyle('.view { border: 1px solid black; }'),
@@ -44,7 +14,7 @@ test('parseStyle', function(t){
   t.end()
 })
 
-test('install', function(t){
+test('basic', function(t){
   var b = new StyleSheet
   b.add('.view', {
     border: '1px solid black'
@@ -61,7 +31,23 @@ test('install', function(t){
   t.end()
 })
 
-test('string install', function(t){
+test('can use camelCase', function(t){
+  var b = new StyleSheet
+  b.add('.view', {
+    backgroundColor: 'red'
+  })
+  b.install()
+  var div = document.createElement('div')
+  div.className = 'view'
+  document.body.appendChild(div)
+  t.assert(getStyleProp(div, 'background-color').match(/red|rgb\(255, 0, 0\)/))
+  b.uninstall()
+  t.assert(!getStyleProp(div, 'background-color').match(/red|rgb\(255, 0, 0\)/))
+  t.end()
+  t.end()
+})
+
+test('string', function(t){
   var b = new StyleSheet
   b.add('.view { border: 1px solid black; }')
   b.install()
@@ -86,6 +72,7 @@ test('still updates after install', function(t){
 })
 
 if (!navigator.userAgent.match(/MSIE/))
+// should use feature detection here, but lazy
 test('will auto-prefix', function(t){
   var b = new StyleSheet
   b.install()

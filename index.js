@@ -12,12 +12,16 @@ StyleSheet.prototype = {
   add: function($1, $2){
     var key
     if (arguments.length === 2){
-      this.styles[key = renderStyle($1, $2)] = {
+      key = renderStyle($1, $2)
+      if (key in this.styles) return
+      this.styles[key] = {
         selector: $1,
         properties: $2
       }
     }else if (arguments.length === 1){
-      this.styles[key = $1] = parseStyle($1)
+      key = $1
+      if (key in this.styles) return
+      this.styles[key] = parseStyle($1)
     }else{
       throw new Error('Wrong number of arguments')
     }
@@ -26,9 +30,6 @@ StyleSheet.prototype = {
       // want to update the live sheet
       this._addRule(key, this.styles[key])
     }
-  },
-  styleSheet: function(){
-    return keys(this.styles).join('\n')
   },
   install: function(parentElm){
     var style = this.styleElm = document.createElement('style')
@@ -44,6 +45,7 @@ StyleSheet.prototype = {
     var rules = sheet.cssRules || sheet.rules
     for (var key in rule.properties){
       var value = rule.properties[key]
+      key = deCamelCase(key)
       if (key in PrefixTable){
         key = '-' + PrefixTable[key] + '-' + key
       }
@@ -116,6 +118,7 @@ function renderStyle(selector, props){
   var styles = []
   for (var prop in props){
     var value = props[prop]
+    prop = deCamelCase(prop)
     if (prop in PrefixTable){
       prop = '-' + PrefixTable[prop] + '-' + prop
     }

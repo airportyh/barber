@@ -1,6 +1,6 @@
 {
   "name": "barber",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Write CSS in Javascript",
   "main": "index.js",
   "scripts": {

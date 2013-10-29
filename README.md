@@ -19,10 +19,12 @@ Simple example
     var Barber = require('barber')
     var styles = Barber.styleSheet()
 
-    styles.add('button', {
-      'border-radius': '10px', // vendor prefixes are applied for you
-      boxShadow: '3px 2px 3px #888', // can also camelCase
-      'background': '#ddd'
+    styles.add({
+      'button': {
+        'border-radius': '10px', // vendor prefixes are applied for you
+        boxShadow: '3px 2px 3px #888', // can also camelCase
+        'background': '#ddd'
+      }
     })
 
     Barber.install() // apply the styles to the page
@@ -30,6 +32,24 @@ Simple example
 Alternatively, you can pass in one single string of CSS to `add()`
 
     styles.add('button { border-radius: 10px; box-shadow: 3px 2px 3px #888; }')
+
+## Selector Nesting
+
+Similarly to most CSS preprocessors, Barber supports selector nesting
+
+    styles.add({
+      '.view': {
+        boxShadow: '3px 2px 3px #888',
+        pre: {
+          fontFamily: 'Monospace'
+        }
+      }
+    })
+
+This will generate the rules:
+
+* `.view { box-shadow: 3px 2px 3px #888; }`, and
+* `.view pre { font-family: Monospace; }`
 
 ## Namespaces
 

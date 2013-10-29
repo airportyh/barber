@@ -1,11 +1,11 @@
+framework: tap
 src_files:
 - "*.js"
-src_files_ignore:
-- "__tests.js"
+- "lib/*.js"
 serve_files:
 - "__tests.js"
-test_page: tests.html
 before_tests: "browserify tests.js -o __tests.js"
+on_exit: rm __tests.js
 launchers:
   node:
     command: node tests.js

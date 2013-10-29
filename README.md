@@ -20,11 +20,11 @@ Simple example
     var styles = Barber.styleSheet()
 
     styles.add({
-      'button': {
-        'border-radius': '10px', // vendor prefixes are applied for you
-        boxShadow: '3px 2px 3px #888', // can also camelCase
-        'background': '#ddd'
-      }
+        'button': {
+            'border-radius': '10px', // vendor prefixes are applied for you
+            boxShadow: '3px 2px 3px #888', // can also camelCase
+            'background': '#ddd'
+        }
     })
 
     Barber.install() // apply the styles to the page
@@ -38,12 +38,12 @@ Alternatively, you can pass in one single string of CSS to `add()`
 Similarly to most CSS preprocessors, Barber supports selector nesting
 
     styles.add({
-      '.view': {
-        boxShadow: '3px 2px 3px #888',
-        pre: {
-          fontFamily: 'Monospace'
+        '.view': {
+            boxShadow: '3px 2px 3px #888',
+            pre: {
+              fontFamily: 'Monospace'
+            }
         }
-      }
     })
 
 This will generate the rules:

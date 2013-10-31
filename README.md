@@ -88,6 +88,7 @@ Then, in a separate part of their code - where they bootstrap the application - 
 They can also choose to skip the stylesheet from your module by explicitly installing each stylesheet they want included.
 
     Barber.styleSheet().install()
+    // Barber.stylesheet('awesome_modules').install()
     Barber.styleSheet('some_other_module').install()
 
 

@@ -16,35 +16,41 @@ Install `barber` via NPM or Bower.
 
 Simple example
 
-    var Barber = require('barber')
-    var styles = Barber.styleSheet()
+```js
+var Barber = require('barber')
+var styles = Barber.styleSheet()
 
-    styles.add({
-        'button': {
-            'border-radius': '10px', // vendor prefixes are applied for you
-            boxShadow: '3px 2px 3px #888', // can also camelCase
-            'background': '#ddd'
-        }
-    })
+styles.add({
+    'button': {
+        'border-radius': '10px', // vendor prefixes are applied for you
+        boxShadow: '3px 2px 3px #888', // can also camelCase
+        'background': '#ddd'
+    }
+})
 
-    Barber.install() // apply the styles to the page
+Barber.install() // apply the styles to the page
+```
 
 Alternatively, you can pass in one single string of CSS to `add()`
 
-    styles.add('button { border-radius: 10px; box-shadow: 3px 2px 3px #888; }')
+```
+styles.add('button { border-radius: 10px; box-shadow: 3px 2px 3px #888; }')
+```
 
 ## Selector Nesting
 
 Similarly to most CSS preprocessors, Barber supports selector nesting
 
-    styles.add({
-        '.view': {
-            boxShadow: '3px 2px 3px #888',
-            pre: {
-              fontFamily: 'Monospace'
-            }
+```js
+styles.add({
+    '.view': {
+        boxShadow: '3px 2px 3px #888',
+        pre: {
+          fontFamily: 'Monospace'
         }
-    })
+    }
+})
+```
 
 This will generate the rules:
 
@@ -55,12 +61,16 @@ This will generate the rules:
 
 In the above example, calling `Barber.styleSheet()` returns the default stylesheet, but you can also namespace your stylesheets
 
-    var styles = Barber.styleSheet('components')
+```js
+var styles = Barber.styleSheet('components')
+```
 
 `Barber.install()` still installs all available stylesheets, but you can choose to instead install each stylesheet separately
 
-    Barber.styleSheet().install()
-    Barber.styleSheet('components').install()
+```js
+Barber.styleSheet().install()
+Barber.styleSheet('components').install()
+```
 
 This gives you more control over what stylesheets you want applied.
 
@@ -68,27 +78,33 @@ This gives you more control over what stylesheets you want applied.
 
 Barber was design with authoring modules in mind. How that would work is, in your Javascript module, you would have code that creates a stylesheet
 
-    // awesome_module.js
-    var styles = require('barber').styleSheet('awesome_module')
+```js
+// awesome_module.js
+var styles = require('barber').styleSheet('awesome_module')
 
-    styles.add(...)
-    styles.add(...)
-    ...
+styles.add(...)
+styles.add(...)
+...
+```
 
 *Note that no stylesheet has been installed within the module code*.
 
 Next, someone else installs your awesome module, and includes it in their app somewhere
 
-    var awesome = require('awesome_module')
+```
+var awesome = require('awesome_module')
+```
 
 Then, in a separate part of their code - where they bootstrap the application - they would install the stylesheets.
 
-    Barber.install()
+```js
+Barber.install()
+```
 
 They can also choose to skip the stylesheet from your module by explicitly installing each stylesheet they want included.
 
-    Barber.styleSheet().install()
-    // Barber.stylesheet('awesome_modules').install()
-    Barber.styleSheet('some_other_module').install()
-
-
+```js
+Barber.styleSheet().install()
+// Barber.stylesheet('awesome_modules').install()
+Barber.styleSheet('some_other_module').install()
+```

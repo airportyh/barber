@@ -91,7 +91,7 @@ styles.add(...)
 
 Next, someone else installs your awesome module, and includes it in their app somewhere
 
-```
+```js
 var awesome = require('awesome_module')
 ```
 

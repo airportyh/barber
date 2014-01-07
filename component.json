@@ -8,6 +8,9 @@
     "css",
     "style"
   ],
+  "scripts": [
+    "index.js"
+  ],
   "author": "Toby Ho",
   "license": "MIT"
 }

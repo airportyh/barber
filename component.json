@@ -9,7 +9,16 @@
     "style"
   ],
   "scripts": [
-    "index.js"
+    "index.js",
+    "lib/add_rule.js",
+    "lib/build_prefix_table.js",
+    "lib/decamelcase.js",
+    "lib/parse_style.js",
+    "lib/properties_text.js",
+    "lib/registry.js",
+    "lib/rules_for.js",
+    "lib/stylesheet.js",
+    "lib/textify.js"
   ],
   "author": "Toby Ho",
   "license": "MIT"

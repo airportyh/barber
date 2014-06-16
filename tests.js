@@ -14,7 +14,6 @@ test('rulesFor basic', function(t){
   t.end()
 })
 
-
 test('rulesFor multiple properties', function(t){
   var rules = rulesFor({
     '.view': {
@@ -93,6 +92,34 @@ test('rulesFor camelCase', function(t){
   })
   t.deepEqual(rules, [
     {sel: '.view', props: {'font-family': 'monospace'}}
+  ])
+  t.end()
+})
+
+test('rulesFor supports comma delimited selectors', function(t){
+  var rules = rulesFor({
+    '.view, .edit': {
+      color: 'red'
+    }
+  })
+  t.deepEqual(rules, [
+    {sel: '.view', props: {color: 'red'}},
+    {sel: '.edit', props: {color: 'red'}}
+  ])
+  t.end()
+})
+
+test('rulesFor supports comma delimited selectors 2', function(t){
+  var rules = rulesFor({
+    'body': {
+      '.view, .edit': {
+        color: 'red'
+      }
+    }
+  })
+  t.deepEqual(rules, [
+    {sel: 'body .view', props: {color: 'red'}},
+    {sel: 'body .edit', props: {color: 'red'}}
   ])
   t.end()
 })

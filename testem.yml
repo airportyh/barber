@@ -1,6 +1,7 @@
 framework: tap
 src_files:
-- "*.js"
+- "index.js"
+- "tests.js"
 - "lib/*.js"
 serve_files:
 - "__tests.js"
